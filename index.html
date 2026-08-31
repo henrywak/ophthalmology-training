@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
-<title>Ophthalmology Technician Training</title>
+<title>Optic Core</title>
 <style>
   /* Committed light palette - alabaster base, black headings, graphite text, blue accent */
   :root{
@@ -213,6 +213,18 @@
   .home-head .display{font-size:clamp(1.9rem,4.5vw,2.6rem)}
   .home-head p{color:var(--muted); margin:14px 0 0; font-size:1.08rem}
   .mods{display:flex; flex-direction:column; gap:16px; max-width:640px}
+  /* ---- splash + role selection ---- */
+  .is-splash .top{display:none}
+  .splash{min-height:76vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:22px}
+  .splash__dot{width:44px;height:44px}
+  .splash__word{font-family:var(--serif); font-weight:600; letter-spacing:-.025em; font-size:clamp(2.6rem,9vw,4.2rem); color:var(--ink); margin:0; animation:sfade 1s var(--ease) both}
+  @keyframes sfade{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+  .roles-head{max-width:var(--measure); margin:6px auto 30px; text-align:center}
+  .roles-head .display{font-size:clamp(1.9rem,4.6vw,2.7rem)}
+  .roles-head p{color:var(--muted); margin:14px auto 0; font-size:1.06rem; max-width:52ch}
+  .rolegrid{display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:720px; margin:0 auto}
+  .mod__num svg{width:18px;height:18px;display:block}
+  @media (max-width:640px){ .rolegrid{grid-template-columns:1fr} }
   .mod{
     text-align:left; width:100%; background:var(--surface); border:1px solid var(--line);
     border-radius:16px; padding:22px 24px; cursor:pointer; color:inherit;
@@ -372,9 +384,9 @@
 <body>
 <header class="top">
   <div class="top__in">
-    <span class="brand"><span class="brand__dot" aria-hidden="true"></span><span class="brand__txt">Ophthalmology Technician Training</span></span>
+    <span class="brand"><span class="brand__dot" aria-hidden="true"></span><span class="brand__txt" id="brandTxt">Optic Core</span></span>
     <span class="top__spacer"></span>
-    <button class="link-home" data-nav="home" hidden>Course home</button>
+    <button class="link-home" data-nav="roles" hidden><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-4v-6H8v6H4a1 1 0 0 1-1-1z"/></svg>Roles</button>
   </div>
 </header>
 
@@ -416,7 +428,7 @@
      CONTENT  &mdash;  edit here to update lessons
      Each lesson: { num, title, topic, body(HTML string) }
      ========================================================= */
-  var MODULES = [
+  var TECH_MODULES = [
     {
       id:"m0", label:"Module 0", title:"Welcome & Orientation",
       status:"available",
@@ -739,7 +751,73 @@
       ]
     },
     {
-      id:"m2", label:"Module 2", title:"Charting the HPI",
+      id:"m2", label:"Module 2", title:"The Technician Workup",
+      status:"available",
+      desc:"What to capture in the workup, the history questions to ask, and how to keep each patient visit quick.",
+      overview:
+        '<p class="lead">Before the physician sees the patient, the technician completes the <strong>workup</strong> &mdash; the measurements and history that prepare the doctor for an efficient exam.</p>'+
+        '<p>This short module covers what to capture, the questions to ask, the eye medications to recognize, and how to keep each visit quick. Reviewing the chart beforehand lets you ask the right questions with confidence.</p>'+
+        '<div class="callout callout--key"><h4 class="callout__title">Learning objectives</h4><ul><li>Know what to capture for new vs. established patients</li><li>Ask a consistent set of history questions and chart them correctly</li><li>Recognize common eye medications by category</li><li>Keep each workup quick, especially on busy days</li></ul></div>',
+      lessons:[
+        {num:"2.1", title:"What to Capture: New vs. Established", topic:"The measurements that start every workup",
+          body:
+            '<p class="lead">The workup is what you collect before the physician sees the patient. What you capture depends on whether the patient is <strong>new</strong> or <strong>established</strong>.</p>'+
+            '<h3>New patients</h3>'+
+            UL(["Capture <strong>AR</strong> (autorefraction)","<strong>Fundus photo</strong> (92250)","Then follow the established-patient workup below"])+
+            '<h3>Established patients</h3>'+
+            UL(["<strong>IOP</strong> &mdash; intraocular pressure","<strong>VA</strong> &mdash; visual acuity"])+
+            '<p>Work accurately, but keep moving &mdash; your time with each patient should be brief so the physician can begin as soon as possible.</p>'+
+            KT(["New patients: AR + fundus photo (92250), then the established workup.","Established patients: IOP and VA.","Capture clean data quickly &mdash; the workup should not take long."])
+        },
+        {num:"2.2", title:"The History Questions", topic:"Systemic history and what the doctor especially wants to know",
+          body:
+            '<p class="lead">After the measurements, ask a short, consistent set of history questions. Reviewing the chart first lets you ask them quickly and confidently.</p>'+
+            '<h3>Systemic history</h3>'+
+            '<p class="m-sub">Diabetes</p>'+
+            UL(["Are you taking medication? &mdash; chart <strong>PO</strong> if oral, <strong>insulin</strong> if on insulin","What is your <strong>A1C</strong>?","How long have you been diabetic, and how long on the medication?","Mark diabetes under <strong>endocrine</strong>"])+
+            '<p class="m-sub">High blood pressure</p>'+
+            UL(["Are you taking medication? &mdash; chart <strong>PO</strong> if they are","Mark high blood pressure under <strong>cardiovascular</strong>"])+
+            '<p class="m-sub">Cholesterol</p>'+
+            UL(["Are you taking medication? &mdash; chart <strong>PO</strong> if they are"])+
+            '<p class="m-sub">Family history</p>'+
+            UL(["Do any immediate relatives have diabetes, high blood pressure, or high cholesterol?"])+
+            '<p class="m-sub">Major surgeries (within 1&ndash;5 years)</p>'+
+            '<p>Note any recent major surgeries, especially:</p>'+
+            UL(["<strong>Cardiac / vascular</strong> &mdash; carotid endarterectomy, heart bypass, stent placements","<strong>Neurosurgery</strong> &mdash; brain surgery, aneurysm repair, tumor removal","<strong>Sinus or facial-bone surgery</strong> &mdash; around the nose, sinuses, or cheekbones"])+
+            '<p class="m-sub">Allergies</p>'+
+            UL(["Are you allergic to any medication? &mdash; e.g. penicillin; NSAIDs (ibuprofen, aspirin); anti-seizure medications"])+
+            '<div class="callout callout--check"><h4 class="callout__title">What the doctor especially wants to know</h4><ul><li>If the patient is <strong>diabetic</strong>: their <strong>A1C level</strong>, and <strong>how long</strong> they have been diabetic and taking their diabetes medication</li><li>Whether they use <strong>any eye medications</strong>, and <strong>what kind</strong> (covered next)</li></ul></div>'+
+            KT(["Ask the same questions every time: diabetes, blood pressure, cholesterol, family history, surgeries, allergies.","Chart the shorthand: PO / insulin, and mark endocrine (diabetes) and cardiovascular (blood pressure).","For diabetics, the A1C and how long they have been diabetic or on medication matter most.","Reviewing the chart beforehand makes the questions faster."])
+        },
+        {num:"2.3", title:"Eye Medications", topic:"Recognizing common drops by category",
+          body:
+            '<p class="lead">Always ask whether the patient is using <strong>any eye medications</strong>, and if so, <strong>what kind</strong>. The drops tell the physician what is being treated.</p>'+
+            '<h3>Glaucoma</h3>'+
+            UL(["Latanoprost (Xalatan, Xelpros, Lyuzeh)","Bimatoprost (Lumigan)","Travoprost (Travatan Z)","Timolol ophthalmic solution","Brimonidine tartrate (Alphagan P)"])+
+            '<h3>Dry eye</h3>'+
+            UL(["Restasis","Cequa","Vevye"])+
+            '<h3>Infection / inflammation</h3>'+
+            '<p class="m-sub">Antibiotics</p>'+
+            UL(["Moxifloxacin (Vigamox, Moxeza)","Besifloxacin (Besivance)"])+
+            '<p class="m-sub">Corticosteroids</p>'+
+            UL(["Prednisolone acetate (Pred Forte)","Loteprednol (Lotemax, Eysuvis)"])+
+            '<p>You do not need to memorize every brand &mdash; recognize the categories, and chart the name the patient gives you (or read it off the bottle).</p>'+
+            KT(["Always ask if they use eye medications, and what kind.","Common categories: glaucoma drops, dry-eye drops, and infection / inflammation drops.","Chart what they are using; recognize the category rather than memorizing every brand."])
+        },
+        {num:"2.4", title:"Keeping the Workup Quick", topic:"Staying efficient on busy days, and the chief complaint",
+          body:
+            '<p class="lead">Your time with each patient should be short. On busy days, a fast, smooth workup keeps the whole clinic moving.</p>'+
+            '<h3>On busy days</h3>'+
+            UL(["Avoid taking the <strong>IOP</strong> machine into the workup room, so other technicians can use it &mdash; this reduces wait times and avoids disturbing patients already in rooms","Use the <strong>visual-acuity posters</strong> and the hallway to test vision","Ask swiftly whether they use any eye medications","<strong>Review the chart beforehand</strong> so you can ask questions confidently and quickly","Remaining past-medical-history questions can be asked quickly once the patient is in the room, before they see the doctor"])+
+            '<h3>Ask about the chief complaint</h3>'+
+            '<p>After the workup, ask whether the patient is having any particular discomfort with their eyes. Most patients scheduled as a follow-up are simply returning for their scheduled testing or evaluation. But for an <strong>urgent visit</strong>, or a patient seen earlier than their follow-up, ask what specifically is bothering their eye.</p>'+
+            WARN('Post-op cataract patients','<p style="margin:0">Follow your clinic&rsquo;s post-op cataract workup. Post-op charting is covered in <strong>Module 3: Charting the HPI</strong>.</p>')+
+            KT(["Keep each visit brief &mdash; the workup should move quickly.","On busy days, leave the IOP machine free and use posters / the hallway for vision.","Review the chart first, then confirm history in the room before the doctor.","Ask about eye discomfort; urgent or early visits need the specific complaint."])
+        }
+      ]
+    },
+    {
+      id:"m3", label:"Module 3", title:"Charting the HPI",
       status:"available",
       desc:"The charting matrix — the basic chart format for each chief complaint, plus reading the TAR to know why the patient is back.",
       overview:
@@ -769,7 +847,7 @@
         ])+'</div>',
       lessons:[
         {
-          num:"2.1", title:"The HPI Charting Matrix", topic:"The fixed format behind every chief complaint",
+          num:"3.1", title:"The HPI Charting Matrix", topic:"The fixed format behind every chief complaint",
           body:
             '<p class="lead">The <abbr title="History of Present Illness">HPI</abbr> is the heart of the chart. Once you know the matrix, every chief complaint becomes a fill-in-the-blank exercise.</p>'+
             '<p>Chart every visit in two steps. First set the <strong>Reason for Visit</strong> (the diagnosis). Then write the HPI using these fields, <strong>always in this order</strong>:</p>'+
@@ -805,7 +883,7 @@
             ])
         },
         {
-          num:"2.2", title:"Dry Eyes", topic:"Dry Eyes OU and punctal plugs",
+          num:"3.2", title:"Dry Eyes", topic:"Dry Eyes OU and punctal plugs",
           body:
             '<p class="lead">Dry eye is one of the most common return visits. The surface symptoms &mdash; fbs, tearing, irritation &mdash; and what the patient is using to manage them drive the chart.</p>'+
             MATRIX("Dry Eyes OU",[
@@ -835,7 +913,7 @@
             ])
         },
         {
-          num:"2.3", title:"Glaucoma & Glaucoma Suspect", topic:"IOP checks and glaucoma testing",
+          num:"3.3", title:"Glaucoma & Glaucoma Suspect", topic:"IOP checks and glaucoma testing",
           body:
             '<p class="lead">Glaucoma and glaucoma-suspect visits are about pressure and the optic nerve. Associated symptoms are often <strong>none</strong> &mdash; the disease is usually silent.</p>'+
             MATRIX("Glaucoma Suspect OU",[
@@ -855,7 +933,7 @@
             ])
         },
         {
-          num:"2.4", title:"Diabetic Eye Exams & Retinopathy", topic:"Dilated diabetic exams and diabetic retina conditions",
+          num:"3.4", title:"Diabetic Eye Exams & Retinopathy", topic:"Dilated diabetic exams and diabetic retina conditions",
           body:
             '<p class="lead">Diabetic eye exams are dilated screening visits. Severity is charted as <strong>insulin dependent</strong> or <strong>non-insulin dependent</strong>, and duration is how long the patient has been diabetic. The physician determines the exact reason for exam.</p>'+
             MATRIX("Diabetic Eye Exam",[
@@ -886,7 +964,7 @@
             ])
         },
         {
-          num:"2.5", title:"Macular, Retina, & Injection Follow-Ups", topic:"AMD, vein occlusion, and diabetic injections",
+          num:"3.5", title:"Macular, Retina, & Injection Follow-Ups", topic:"AMD, vein occlusion, and diabetic injections",
           body:
             '<p class="lead">These macular / retina follow-ups center on the back of the eye. Some patients come specifically for <strong>injections</strong> (anti-VEGF), which changes the Reason for Exam to a treatment visit.</p>'+
             '<h4>Which diagnoses may get injection treatment</h4>'+
@@ -926,7 +1004,7 @@
             ])
         },
         {
-          num:"2.6", title:"Cataract, Blurry Vision & Post-Op", topic:"Gradual blur and post-operative checks",
+          num:"3.6", title:"Cataract, Blurry Vision & Post-Op", topic:"Gradual blur and post-operative checks",
           body:
             '<p class="lead">Gradual, cloudy blur points to cataract; the chart notes glasses and distance. Post-op visits use a shorter, narrative form instead of the full field list.</p>'+
             MATRIX("Nuclear Sclerosis/Cataract/Blurry Vision Follow Up (laterality)",[
@@ -960,7 +1038,7 @@
             ])
         },
         {
-          num:"2.7", title:"Floaters & Flashes", topic:"New spots, and the flashes escalation rule",
+          num:"3.7", title:"Floaters & Flashes", topic:"New spots, and the flashes escalation rule",
           body:
             '<p class="lead">Floaters are charted with a severity that reflects how many the patient reports. Because new floaters and flashes can signal a retinal tear or detachment, this visit type carries a safety rule.</p>'+
             MATRIX("Floaters OS",[
@@ -981,7 +1059,7 @@
             ])
         },
         {
-          num:"2.8", title:"Reading the TAR", topic:"Exam codes vs. testing codes",
+          num:"3.8", title:"Reading the TAR", topic:"Exam codes vs. testing codes",
           body:
             '<p class="lead">The <strong>TAR</strong> is the visit&rsquo;s authorization / order sheet. It lists an <strong>exam code</strong> and any <strong>testing codes</strong> ordered &mdash; and those codes usually tell you why the patient is back before you even ask.</p>'+
             '<h3>Exam codes (the visit itself)</h3>'+
@@ -1020,7 +1098,7 @@
             ])
         },
         {
-          num:"2.9", title:"Assessment: Chart from the TAR", topic:"Read the order sheet, identify the visit, chart it",
+          num:"3.9", title:"Assessment: Chart from the TAR", topic:"Read the order sheet, identify the visit, chart it",
           body:
             '<p class="lead">Each scenario shows a <strong>TAR</strong>. Read the codes, decide what the patient is here for, then reveal the model charting to check yourself. Pick an answer to get feedback; a correct choice locks the question.</p>'+
             // Scenario 1 — Glaucoma
@@ -1123,11 +1201,19 @@
               ["Reason for Exam","Here for Further Evaluation and Management &mdash; flag flashes to physician, set up for dilation"]
             ])+'</details>'+
             WARN("Remember","<p style=\"margin:0\">The TAR tells you what was ordered, but a symptom like <strong>flashes</strong> can change the plan on the spot. When in doubt, tell the physician and follow clinic protocol.</p>")+
-            '<p><em>This completes Module 2. You can revisit any chief complaint from the lesson list.</em></p>'
+            '<p><em>This completes Module 3. You can revisit any chief complaint from the lesson list.</em></p>'
         }
       ]
     }
   ];
+
+  var PAR_MODULES = [];
+  var ROLES = [
+    {id:"tech", name:"Technician", short:"Technician Training", desc:"Clinical foundations, the technician workup, and charting the HPI.", status:"available", icon:"eye", modules:TECH_MODULES},
+    {id:"par", name:"Patient Access Representative", short:"Patient Access Representative Training", desc:"Front-desk and patient-access training.", status:"soon", icon:"user", modules:PAR_MODULES}
+  ];
+  var MODULES = TECH_MODULES;
+  function roleById(id){ for(var i=0;i<ROLES.length;i++){ if(ROLES[i].id===id) return ROLES[i]; } return null; }
 
   /* =========================================================
      APP LOGIC
@@ -1139,13 +1225,14 @@
   var btnBack = document.getElementById("btnBack");
   var btnNext = document.getElementById("btnNext");
   var linkHome = document.querySelector(".link-home");
+  var brandTxt = document.getElementById("brandTxt");
   var reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
 
-  var state = { view:"intro", m:0, p:0 }; // p: 0=overview, 1..n=lesson(i-1), n+1=complete
+  var state = { view:"splash", role:null, m:0, p:0 }; // p: 0=overview, 1..n=lesson(i-1), n+1=complete
   var animating = false;
 
   /* ---- progress persistence (guarded) ---- */
-  var STORE = "ophthal-training-v1";
+  var STORE = "ophthal-training-v2";
   var progress = load();
   function load(){ try{ return JSON.parse(localStorage.getItem(STORE))||{}; }catch(e){ return {}; } }
   function save(){ try{ localStorage.setItem(STORE, JSON.stringify(progress)); }catch(e){} }
@@ -1156,10 +1243,13 @@
   }
   function markDone(mid){ if(!progress[mid]) progress[mid]={lessons:[],done:false}; progress[mid].done=true; save(); }
   function isDone(mid){ return !!(progress[mid] && progress[mid].done); }
-  function savePos(){ try{ localStorage.setItem(STORE+"-pos", JSON.stringify({v:state.view,m:state.m,p:state.p})); }catch(e){} }
+  function savePos(){ try{ if(state.role && (state.view==="home"||state.view==="module")) localStorage.setItem(STORE+"-pos", JSON.stringify({v:state.view,m:state.m,p:state.p,role:state.role})); }catch(e){} }
   function loadPos(){ try{ return JSON.parse(localStorage.getItem(STORE+"-pos")); }catch(e){ return null; } }
+  function computeResume(){ var pos=loadPos(); if(!pos||!pos.role) return null; var role=roleById(pos.role); if(!role||role.status!=="available") return null; var mods=role.modules; if(pos.v==="home") return {role:role.id,mods:mods,view:"home",m:0,p:0}; if(pos.v==="module" && typeof pos.m==="number" && mods[pos.m] && mods[pos.m].status==="available"){ var n=mods[pos.m].lessons.length; return {role:role.id,mods:mods,view:"module",m:pos.m,p:Math.max(0,Math.min(n+1,pos.p||0))}; } return null; }
 
   var ICON = {
+    eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>',
     arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
     lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>',
     check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
@@ -1205,7 +1295,7 @@
   }
   function isAssessmentLesson(){
     if(state.view!=="module") return false;
-    var mod=MODULES[state.m]; if(!mod||mod.id!=="m2") return false;
+    var mod=MODULES[state.m]; if(!mod||mod.id!=="m3") return false;
     if(state.p<1||state.p>mod.lessons.length) return false;
     return /assessment/i.test(mod.lessons[state.p-1].title);
   }
@@ -1275,13 +1365,35 @@
   function scrollTopSmooth(){ animateScroll(0); }
 
   /* ---------- screen renderers (return HTML) ---------- */
+  function vSplash(){
+    return '<section class="splash"><span class="brand__dot splash__dot" aria-hidden="true"></span><h1 class="splash__word">Optic Core</h1></section>';
+  }
+  function vRoles(){
+    var cards = ROLES.map(function(r){
+      var ready = r.status==="available";
+      var pill = ready ? '<span class="pill pill--ready">Available</span>' : '<span class="pill pill--soon">Coming soon</span>';
+      return '<button class="mod" data-nav="role" data-r="'+r.id+'">'+
+        '<span class="mod__num">'+(ICON[r.icon]||"")+'</span>'+
+        '<span class="mod__body">'+
+          '<span class="mod__title">'+r.name+'</span>'+
+          '<span class="mod__desc">'+r.desc+'</span>'+
+          '<span class="mod__meta">'+pill+'</span>'+
+        '</span>'+
+        '<span class="mod__arrow">'+ICON.arrow+'</span>'+
+      '</button>';
+    }).join("");
+    return '<section class="roles">'+
+      '<div class="roles-head"><p class="eyebrow">Optic Core</p><h1 class="display">What role are you learning?</h1><p>Choose your role to start the training built for it.</p></div>'+
+      '<div class="rolegrid">'+cards+'</div>'+
+    '</section>';
+  }
   function vIntro(){
     return '<section class="hero">'+
       '<p class="eyebrow">Pre-Clinic Training</p>'+
       '<h1 class="display">Ophthalmology Technician Training</h1>'+
       '<p class="hero__sub">A clinical foundation for new technicians &mdash; the terminology, anatomy, and workflow you&rsquo;ll build on before your in-person training begins.</p>'+
       '<button class="btn" data-nav="start">Begin '+ICON.arrow+'</button>'+
-      '<p class="hero__meta">Self-paced &middot; 3 modules &middot; 26 lessons</p>'+
+      '<p class="hero__meta">Self-paced &middot; 4 modules &middot; 30 lessons</p>'+
     '</section>';
   }
 
@@ -1306,6 +1418,10 @@
   }
 
   function vHome(){
+    var role = roleById(state.role) || {name:"Course"};
+    if(!MODULES.length){
+      return '<section><div class="home-head"><p class="eyebrow">'+role.name+'</p><h1 class="display">Coming soon</h1><p>Training modules for this role are being built. Check back soon.</p></div></section>';
+    }
     var cards = MODULES.map(function(m,i){
       var ready = m.status==="available";
       var done = isDone(m.id);
@@ -1325,7 +1441,7 @@
       '</button>';
     }).join("");
     return '<section>'+
-      '<div class="home-head"><p class="eyebrow">Course</p>'+
+      '<div class="home-head"><p class="eyebrow">'+role.name+'</p>'+
         '<h1 class="display">Choose a module</h1>'+
         '<p>Work through the modules in order. More modules will be added as the program grows.</p></div>'+
       '<div class="mods">'+cards+'</div>'+
@@ -1381,8 +1497,12 @@
   /* ---------- chrome (header + footer bar) ---------- */
   function updateChrome(){
     var inModule = (state.view==="module");
+    var role = state.role ? roleById(state.role) : null;
+    var showRole = !!(role && (state.view==="home" || state.view==="module"));
+    brandTxt.textContent = showRole ? role.short : "Optic Core";
+    linkHome.hidden = !showRole;
+    document.body.classList.toggle("is-splash", state.view==="splash");
     document.body.classList.toggle("has-bar", inModule);
-    linkHome.hidden = !inModule;
 
     if(!inModule) return;
     var mod = MODULES[state.m], n = mod.lessons.length, p = state.p;
@@ -1428,6 +1548,8 @@
   /* ---------- render dispatch + transition ---------- */
   function html(){
     switch(state.view){
+      case "splash": return vSplash();
+      case "roles": return vRoles();
       case "intro": return vIntro();
       case "start": return vStart();
       case "home": return vHome();
@@ -1510,6 +1632,8 @@
     else if(nav==="lesson"){ var li=+t.getAttribute("data-i"); go(function(){ state.p=li+1; }); }
     else if(nav==="next")   next();
     else if(nav==="back")   back();
+    else if(nav==="roles")  go(function(){ state.view="roles"; });
+    else if(nav==="role"){ var rid=t.getAttribute("data-r"); go(function(){ var r=roleById(rid); if(!r) return; state.role=rid; MODULES=r.modules; state.view="home"; state.m=0; state.p=0; }); }
     else if(nav==="totop")  scrollTopSmooth();
   });
 
@@ -1531,21 +1655,14 @@
   });
 
   // restore last position (resume), with guards
-  (function restore(){
-    var pos = loadPos();
-    if(!pos || !pos.v) return;
-    if(pos.v==="module"){
-      if(typeof pos.m!=="number" || !MODULES[pos.m] || MODULES[pos.m].status!=="available") return;
-      var n = MODULES[pos.m].lessons.length;
-      state.view="module"; state.m=pos.m;
-      state.p = Math.max(0, Math.min(n+1, pos.p||0));
-    } else if(pos.v==="start" || pos.v==="home"){
-      state.view = pos.v;
-    }
-  })();
-
-  // first paint
+  var _resume = computeResume();
   paint();
+  setTimeout(function(){
+    go(function(){
+      if(_resume){ state.role=_resume.role; MODULES=_resume.mods; state.view=_resume.view; state.m=_resume.m; state.p=_resume.p; }
+      else { state.view="roles"; }
+    });
+  }, reduce ? 450 : 1500);
 })();
 </script>
 </body>
