@@ -413,6 +413,7 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
 </button>
 
+<script src="training/front-desk.js"></script>
 <script>
 (function(){
   "use strict";
@@ -1207,10 +1208,44 @@
     }
   ];
 
-  var PAR_MODULES = [];
+  var PAR_MODULES = window.createFrontDeskModules();
+  // Preserve the existing checkout workflow separately from phone cross-training.
+  PAR_MODULES.push({
+    id:"par-checkout-v1", label:"Module 5", title:"Checkout Scheduling",
+    status:"available", desc:"Use the TAR to schedule the return visit at checkout.",
+    overview:'<p class="lead">Apply the scheduling skills from cross-training to the existing checkout workflow.</p>',
+    lessons:[
+        {
+          num:"5.1", title:"Checkout Scheduling", topic:"Scheduling the patient&rsquo;s return visit at checkout",
+          body:
+            '<p class="lead">At checkout, you will be given a <strong>TAR</strong> showing when the patient should return and the <strong>CPT codes</strong> planned for that visit.</p>'+
+            '<h3 class="m-sec">Checkout Workflow</h3>'+
+            OL([
+              "Confirm the patient&rsquo;s <strong>name and date of birth</strong>.",
+              "Check <strong>when the patient should return</strong>, such as two weeks or three months.",
+              "Find an appointment time the patient is comfortable with. Patients often prefer the <strong>same weekday</strong> as their current visit.",
+              "Get the <strong>schedule card for that doctor</strong>, write the date, time, and patient name, and give it to the patient."
+            ])+
+            WARN("Scheduling capacity",'<p style="margin:0">Follow the clinic&rsquo;s current <strong>scheduling-capacity rules</strong> when booking returning patients.</p>')+
+            '<h3 class="m-sec">Before the Patient Leaves</h3>'+
+            UL([
+              "Repeat the physician, date, and time",
+              "Make sure the patient has the completed schedule card",
+              "Confirm any visit-specific instructions provided by the clinical team",
+              "Ask for help if the requested return interval or scheduling instructions are unclear"
+            ])+
+            KT([
+              "Use the TAR to identify the return interval and planned CPT codes",
+              "Confirm identity before scheduling",
+              "Offer an appropriate time while following capacity rules",
+              "Give the patient a completed schedule card before they leave"
+            ])
+        }
+    ]
+  });
   var ROLES = [
     {id:"tech", name:"Technician", short:"Technician Training", desc:"Clinical foundations, the technician workup, and charting the HPI.", status:"available", icon:"eye", modules:TECH_MODULES},
-    {id:"par", name:"Patient Access Representative", short:"Patient Access Representative Training", desc:"Front-desk and patient-access training.", status:"soon", icon:"user", modules:PAR_MODULES}
+    {id:"par", name:"Patient Access Representative", short:"Patient Access Representative Training", desc:"Front-desk cross-training: phones, Nextech, insurance, scheduling, and urgent calls.", status:"available", icon:"user", modules:PAR_MODULES}
   ];
   var MODULES = TECH_MODULES;
   function roleById(id){ for(var i=0;i<ROLES.length;i++){ if(ROLES[i].id===id) return ROLES[i]; } return null; }
@@ -1222,6 +1257,7 @@
   var barLabel = document.getElementById("barLabel");
   var barPct = document.getElementById("barPct");
   var barFill = document.getElementById("barFill");
+  var btnOverview = document.getElementById("btnOverview");
   var btnBack = document.getElementById("btnBack");
   var btnNext = document.getElementById("btnNext");
   var linkHome = document.querySelector(".link-home");
@@ -1574,7 +1610,7 @@
     // interactive anatomy diagram + back-to-top (Lesson 1.2 only)
     onAnatomy = isAnatomyLesson();
     if(onAnatomy) enhanceAnatomy();
-    if(isAssessmentLesson()) enhanceAssessment();
+    enhanceAssessment(); // Bind knowledge checks in every role, including front-desk lessons.
     if(floatTop){ floatTop.hidden = !onAnatomy; updateFloat(); }
     savePos();
   }
